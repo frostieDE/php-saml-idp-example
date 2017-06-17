@@ -1,0 +1,42 @@
+{% extends "main.html.twig" %}
+
+{% block title %}Service Providers{% endblock %}
+
+{% block content %}
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Entity ID</th>
+                <th>Callback URL</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for sp in providers %}
+                <tr>
+                    <td>{{ sp.name }}</td>
+                    <td>{{ sp.entityId }}</td>
+                    <td>{{ sp.callbackUrl }}</td>
+                    <th>
+                        <a href="{{ path('edit_service_provider', { id: sp.id }) }}" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="{{ path('service_provider_cert', { id: sp.id }) }}" class="btn btn-sm btn-primary">
+                            <i class="fa fa-info"></i>
+                        </a>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('add_service_provider' )}}" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add
+    </a>
+
+{% endblock %}

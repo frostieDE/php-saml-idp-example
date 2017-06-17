@@ -1,0 +1,43 @@
+{% extends "main.html.twig" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>E-Mail</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+                    <th>{{ user.roles|join(',') }}</th>
+                    <th>
+                        <a href="{{ path('edit_user', { id: user.id }) }}" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('add_user' )}}" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add
+    </a>
+
+{% endblock %}

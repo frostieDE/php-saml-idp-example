@@ -1,0 +1,16 @@
+{% extends "main.html.twig" %}
+
+{% block title %}Edit user{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save"></i> Save
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

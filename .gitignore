@@ -1,6 +1,21 @@
-composer.phar
-/vendor/
+# Caches
+/var/cache/**/*
+/var/logs/*
 
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
+# Configuration
+/app/config.*.yml
+
+# Uploads
+/uploads/*
+
+# Test reports
+/tests/report*
+
+# Composer
+/vendor
+
+# Always include .gitkeep
+!/**/.gitkeep
+
+# Certificates
+/app/certs

@@ -1,0 +1,18 @@
+db:
+  driver: "pdo_mysql"
+  dbname: "idp"
+  host: "127.0.0.1"
+  user: ""
+  password: ""
+  charset: "utf8mb4"
+  # port: 3306
+  # path: "./app/data.sqlite"
+
+idp:
+  id: "https://idp.test/"
+
+  url: "https://idp.test/sso/login"
+
+  cert:
+    key: "idp.key"
+    file: "idp.crt"

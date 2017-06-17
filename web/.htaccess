@@ -1,0 +1,27 @@
+# Modified .htaccess taken from the Symfony framework
+# Source: https://github.com/symfony/symfony-standard/blob/master/web/.htaccess
+
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Determine the RewriteBase automatically and set it as environment variable.
+  RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+  RewriteRule ^(.*) - [E=BASE:%1]
+
+  # Sets the HTTP_AUTHORIZATION header removed by Apache
+  RewriteCond %{HTTP:Authorization} .
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+
+  # If the requested filename exists, simply serve it.
+  # We only want to let Apache serve files and not directories.
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Rewrite all other queries to the front controller.
+  RewriteRule ^ %{ENV:BASE}/index.php [L]
+</IfModule>

@@ -1,0 +1,39 @@
+{
+    "name": "frostiede/silex-project",
+    "type": "project",
+    "require": {
+        "php": ">=5.6",
+        "silex/silex": "^2.0",
+        "twig/twig": "^1.26",
+        "monolog/monolog": "^1.21",
+        "saxulum/config-service-provider": "^2.0",
+        "frostiede/silex-version-serviceprovider": "^1.0",
+        "frostiede/silex-environment-serviceprovider": "^1.0",
+        "knplabs/console-service-provider": "^2.0",
+        "lightsaml/lightsaml-idp": "^1.0",
+        "dflydev/doctrine-orm-service-provider": "^2.0",
+        "saxulum/saxulum-doctrine-orm-manager-registry-provider": "^3.1",
+        "symfony/validator": "^3.3",
+        "symfony/security": "^3.3",
+        "lightsaml/lightsaml-logout": "^1.0",
+        "symfony/twig-bridge": "^3.3",
+        "symfony/form": "^3.3",
+        "symfony/yaml": "^3.3",
+        "boxedcode/silex-knp-menu-service-provider": "^1.0",
+        "symfony/config": "^3.3",
+        "symfony/doctrine-bridge": "^3.3",
+        "symfony/security-csrf": "^3.3"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {
+            "App\\": "./src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcel Marnitz",
+            "email": "marcelmarnitz@googlemail.com"
+        }
+    ]
+}
