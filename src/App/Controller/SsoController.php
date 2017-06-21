@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use App\Application;
 use App\LightSaml\Container\BuildContainer;
+use App\Saml\RequestStorage\RequestStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SsoController {
     public function saml(Request $request, Application $app) {
+        /** @var RequestStorageInterface $requestStorage */
+        $requestStorage = $app['saml.request_storage'];
+        $requestStorage->load();
+
         /** @var BuildContainer $buildContext */
         $buildContext = $app['lightsaml.container.build'];
         $receiveBuilder = new \LightSaml\Idp\Builder\Profile\WebBrowserSso\Idp\SsoIdpReceiveAuthnRequestProfileBuilder($buildContext);
@@ -35,6 +40,8 @@ class SsoController {
         $action = $sendBuilder->buildAction();
 
         $action->execute($context);
+
+        $requestStorage->clear();
 
         return $context->getHttpResponseContext()->getResponse();
     }

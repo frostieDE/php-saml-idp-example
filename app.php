@@ -3,7 +3,10 @@
 $loader = include_once __DIR__ . '/vendor/autoload.php';
 
 use App\Application;
+use App\Saml\ExceptionListener;
+use App\Security\ServiceProviderVoter;
 use App\Security\UserProvider;
+use App\ServiceProvider\CommandsServiceProvider;
 use App\ServiceProvider\ControllerServiceProvider;
 use App\ServiceProvider\IdentityProviderServiceProvider;
 use App\ServiceProvider\RouteServiceProvider;
@@ -107,12 +110,31 @@ $app->register(new SecurityServiceProvider(), [
                 return new UserProvider($app['orm.em']);
             }
         ],
-
     ],
     'security.role_hierarchy' => [
         'ROLE_ADMIN' => [ 'ROLE_USER' ]
     ]
 ]);
+
+$app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name, $accessDeniedHandler = null) use ($app) {
+    return function () use ($app, $entryPoint, $name, $accessDeniedHandler) {
+        return new ExceptionListener(
+            $app['security.token_storage'],
+            $app['security.trust_resolver'],
+            $app['security.http_utils'],
+            $name,
+            $app[$entryPoint],
+            null, // errorPage
+            $accessDeniedHandler,
+            $app['logger']
+        );
+    };
+});
+
+$app->extend('security.voters', function(array $voters) {
+    $voters[] = new ServiceProviderVoter();
+    return $voters;
+});
 
 $app->register(new TwigServiceProvider(), [
     'twig.path' => __DIR__ . '/app/templates',
@@ -162,5 +184,6 @@ $app->register(new ConsoleServiceProvider(), [
     'console.version' => $app['version'],
     'console.project_directory' => __DIR__
 ]);
+$app->register(new CommandsServiceProvider());
 
 return $app;

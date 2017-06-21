@@ -5,6 +5,11 @@ namespace App\ServiceProvider;
 use App\LightSaml\Container\BuildContainer;
 use App\LightSaml\Container\SystemContainer;
 use App\LightSaml\EntityDescriptor\ServiceProviderEntityStore;
+use App\LightSaml\Provider\Attribute\AttributeValueProvider;
+use App\LightSaml\Provider\NameId\NameIdProvider;
+use App\LightSaml\Store\Credential\Factory\CredentialFactory;
+use App\Saml\RequestStorage\SessionRequestStorage;
+use App\Saml\SamlRequestListener;
 use LightSaml\Binding\BindingFactory;
 use LightSaml\Bridge\Pimple\Container\CredentialContainer;
 use LightSaml\Bridge\Pimple\Container\OwnContainer;
@@ -18,8 +23,6 @@ use LightSaml\Credential\X509Certificate;
 use LightSaml\Credential\X509Credential;
 use LightSaml\Logout\Resolver\Logout\LogoutSessionResolver;
 use LightSaml\Meta\TrustOptions\TrustOptions;
-use LightSaml\Model\Metadata\EntityDescriptor;
-use LightSaml\Model\Metadata\KeyDescriptor;
 use LightSaml\Provider\TimeProvider\SystemTimeProvider;
 use LightSaml\Resolver\Credential\Factory\CredentialResolverFactory;
 use LightSaml\Resolver\Endpoint\BindingEndpointResolver;
@@ -30,7 +33,6 @@ use LightSaml\Resolver\Endpoint\LocationEndpointResolver;
 use LightSaml\Resolver\Endpoint\ServiceTypeEndpointResolver;
 use LightSaml\Resolver\Session\SessionProcessor;
 use LightSaml\Resolver\Signature\OwnSignatureResolver;
-use LightSaml\Store\Credential\Factory\CredentialFactory;
 use LightSaml\Store\EntityDescriptor\FixedEntityDescriptorStore;
 use LightSaml\Store\Id\IdArrayStore;
 use LightSaml\Store\Request\RequestStateSessionStore;
@@ -44,9 +46,10 @@ use LightSaml\Validator\Model\Statement\StatementValidator;
 use LightSaml\Validator\Model\Subject\SubjectValidator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use RobRichards\XMLSecLibs\XMLSecurityKey;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class IdentityProviderServiceProvider implements ServiceProviderInterface {
+class IdentityProviderServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface {
 
     public function register(Container $app) {
 
@@ -163,25 +166,8 @@ class IdentityProviderServiceProvider implements ServiceProviderInterface {
          * Provider Container stuff
          */
 
-        $app[ProviderContainer::ATTRIBUTE_VALUE_PROVIDER] = function () {
-            return (new \LightSaml\Provider\Attribute\FixedAttributeValueProvider())
-                ->add(new \LightSaml\Model\Assertion\Attribute(
-                    \LightSaml\ClaimTypes::COMMON_NAME,
-                    'common-name'
-                ))
-                ->add(new \LightSaml\Model\Assertion\Attribute(
-                    \LightSaml\ClaimTypes::GIVEN_NAME,
-                    'first'
-                ))
-                ->add(new \LightSaml\Model\Assertion\Attribute(
-                    \LightSaml\ClaimTypes::SURNAME,
-                    'last'
-                ))
-                ->add(new \LightSaml\Model\Assertion\Attribute(
-                    \LightSaml\ClaimTypes::EMAIL_ADDRESS,
-                    'somebody@example.com'
-                ));
-
+        $app[ProviderContainer::ATTRIBUTE_VALUE_PROVIDER] = function ($app) {
+            return new AttributeValueProvider($app['security.token_storage']);
         };
 
         $app[ProviderContainer::SESSION_INFO_PROVIDER] = function () {
@@ -193,13 +179,7 @@ class IdentityProviderServiceProvider implements ServiceProviderInterface {
         };
 
         $app[ProviderContainer::NAME_ID_PROVIDER] = function () use ($app) {
-            $nameId = new \LightSaml\Model\Assertion\NameID('name@id.com');
-            $nameId
-                ->setFormat(\LightSaml\SamlConstants::NAME_ID_FORMAT_EMAIL)
-                ->setNameQualifier($app['lightsaml.container.build']->getOwnContainer()->getOwnEntityDescriptorProvider()->get()->getEntityID())
-            ;
-
-            return new \LightSaml\Provider\NameID\FixedNameIdProvider($nameId);
+            return new NameIdProvider($app['lightsaml.container.own'], $app['security.token_storage']);
         };
 
         $app['lightsaml.container.provider'] = function($app) {
@@ -279,5 +259,20 @@ class IdentityProviderServiceProvider implements ServiceProviderInterface {
         $app['lightsaml.container.build'] = function($app) {
             return new BuildContainer($app);
         };
+
+        /*
+         * The following part is not LightSAML specific
+         */
+        $app['saml.request_storage'] = function($app) {
+            return new SessionRequestStorage($app['request_stack'], SessionRequestStorage::DEFAULT_PARAMETERNAME, $app['logger']);
+        };
+
+        $app['saml.request_listener'] = function($app) {
+            return new SamlRequestListener($app['saml.request_storage']);
+        };
+    }
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher) {
+        $dispatcher->addSubscriber($app['saml.request_listener']);
     }
 }

@@ -5,6 +5,9 @@ namespace App\LightSaml\Container;
 use LightSaml\Build\Container\BuildContainerInterface;
 use Pimple\Container;
 
+/**
+ * Build container
+ */
 class BuildContainer implements BuildContainerInterface {
 
     private $app;
