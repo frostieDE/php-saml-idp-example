@@ -895,21 +895,21 @@
         },
         {
             "name": "lightsaml/lightsaml",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightSAML/lightSAML.git",
-                "reference": "6caf53af2f7ecd2162ebae244c6e1a562f7cadc8"
+                "reference": "a5201d9001771930a8d4f6f8ba4d983679941b7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightSAML/lightSAML/zipball/6caf53af2f7ecd2162ebae244c6e1a562f7cadc8",
-                "reference": "6caf53af2f7ecd2162ebae244c6e1a562f7cadc8",
+                "url": "https://api.github.com/repos/lightSAML/lightSAML/zipball/a5201d9001771930a8d4f6f8ba4d983679941b7a",
+                "reference": "a5201d9001771930a8d4f6f8ba4d983679941b7a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.1",
-                "robrichards/xmlseclibs": "~2.0",
+                "robrichards/xmlseclibs": "~2.0|~3.0",
                 "symfony/event-dispatcher": "~2.3|~3.0",
                 "symfony/http-foundation": "~2.3|~3.0"
             },
@@ -954,7 +954,7 @@
                 "lightSAML",
                 "php"
             ],
-            "time": "2017-01-16T10:24:10+00:00"
+            "time": "2017-06-20T05:15:02+00:00"
         },
         {
             "name": "lightsaml/lightsaml-idp",
@@ -1031,16 +1031,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
@@ -1061,7 +1061,7 @@
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "~5.3"
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -1105,7 +1105,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -1250,24 +1250,23 @@
         },
         {
             "name": "robrichards/xmlseclibs",
-            "version": "2.0.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/robrichards/xmlseclibs.git",
-                "reference": "53bb1e9cae490a8f93af41bd9df6ea897161ca05"
+                "reference": "a29eb3100eb6c5a427d6a3f9e61aff37492405ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robrichards/xmlseclibs/zipball/53bb1e9cae490a8f93af41bd9df6ea897161ca05",
-                "reference": "53bb1e9cae490a8f93af41bd9df6ea897161ca05",
+                "url": "https://api.github.com/repos/robrichards/xmlseclibs/zipball/a29eb3100eb6c5a427d6a3f9e61aff37492405ae",
+                "reference": "a29eb3100eb6c5a427d6a3f9e61aff37492405ae",
                 "shasum": ""
             },
             "require": {
-                "php": ">= 5.3"
+                "php": ">= 5.6"
             },
             "suggest": {
-                "ext/mcrypt": "MCrypt extension",
-                "ext/openssl": "OpenSSL extension"
+                "ext-openssl": "OpenSSL extension"
             },
             "type": "library",
             "autoload": {
@@ -1287,7 +1286,7 @@
                 "xml",
                 "xmldsig"
             ],
-            "time": "2016-09-08T13:15:00+00:00"
+            "time": "2017-05-25T15:25:34+00:00"
         },
         {
             "name": "saxulum/config-service-provider",
